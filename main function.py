@@ -10,7 +10,7 @@ def load_multigraph(SglOglG, XlsPath, XlsName, number_of_objectives):
 
     # Load the node connection relation
     newG = nx.DiGraph(SglOglG)
-    newG = nx.DiGraph() # Now newG is a empty graph but the edge information has been in edgelist. -Songwei
+    newG = nx.DiGraph()
 
     # Convert to a multigraph
     for Row in range(0, Sheet1_object.nrows):
@@ -22,7 +22,7 @@ def load_multigraph(SglOglG, XlsPath, XlsName, number_of_objectives):
         for ParallelEdge_Counter in range(0, int((Col_Num-2)/number_of_objectives)):
             costvector = []
             for Obj_Counter in range(0, number_of_objectives):
-                costvector.append(int(Sheet1_object.cell_value(Row, 2+ParallelEdge_Counter*number_of_objectives+Obj_Counter))) # Has been tested
+                costvector.append(int(Sheet1_object.cell_value(Row, 2+ParallelEdge_Counter*number_of_objectives+Obj_Counter)))
             g.append(tuple(costvector))
         newG.add_edge(str(Sheet1_object.cell_value(Row,0)), str(Sheet1_object.cell_value(Row,1)), c=g)
     run_time = time.process_time() - start_time
@@ -31,12 +31,12 @@ def load_multigraph(SglOglG, XlsPath, XlsName, number_of_objectives):
 def run_momga(G,O,D,obj,time_limit):
     """
     Given a multigraph G with cost information, origin node O, destination node D, 
-    number of objectives obj, executes the NAMOA* algorithm for multigraphs.
+    number of objectives obj, executes the MOMGA* algorithm for multigraphs.
     A heuristic function H can be specified here.
     """
     H = {}
     for node in G:
-        H[node] = [0 for x in range(obj)]    # There is NO heuristic function! --Songwei
+        H[node] = [0 for x in range(obj)]
     start_time = time.process_time()
     SG,Costs,exp,parallel_edge_expansions,dom,ite = MOMGA(G, H, O, D, obj)
     rtime = time.process_time() - start_time
@@ -51,7 +51,6 @@ def run_momga(G,O,D,obj,time_limit):
 if __name__ == "__main__":
     number_of_objectives = 2
     max_parallel = 10
-    # No need to change the above "number_of_objectives" and "max_parallel"
 
     a = 1500                 # numbe of nodes
     obj_correlation = 'Nega' # or 'Posi'
